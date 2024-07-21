@@ -12,6 +12,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   const handleDiscoverMoreClick = () => {
+
     navigate('/about');
   };
 

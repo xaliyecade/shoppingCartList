@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import GetStarted from './components/GetStarted';
+import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
 import Home from './components/Home';
 import AboutUs from './components/AboutUs';
 import Shop from './components/Shop';
@@ -11,6 +17,7 @@ function App() {
   const [cartItems, setCartItems] = useState([]);
   const [favoriteItems, setFavoriteItems] = useState([]);
   const [isContactUsOpen, setIsContactUsOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const addToCart = (item) => {
     setCartItems([...cartItems, item]);
@@ -43,7 +50,10 @@ function App() {
       <div className="App">
         <NavBar toggleContactUs={toggleContactUs} />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<GetStarted />} />
+          <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/signin" />} />
           <Route path="/about" element={<AboutUs addToCart={addToCart} toggleFavorite={toggleFavorite} />} />
           <Route path="/shop" element={<Shop addToCart={addToCart} toggleFavorite={toggleFavorite} />} />
           <Route path="/added-carts" element={<AddedCarts cartItems={cartItems} removeFromCart={removeFromCart} />} />
@@ -72,6 +82,7 @@ function App() {
             </div>
           </div>
         )}
+        <ToastContainer />
       </div>
     </Router>
   );
